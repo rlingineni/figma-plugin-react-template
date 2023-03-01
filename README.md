@@ -1,28 +1,59 @@
 # figma-plugin-react-template
 
-Ever wish it was as easy to build a Figma plugin as it is to build a website? Well no look no further! This template will allow you to develop your Figma plugin in your favourite browser while interacting with the Figma app. Use your favourite browser extensions such as React Developer Tools to help debug your issues faster, and take advantage of the built in hot-reloading to preview your changes instantaneously without having to constantly rebuild and relaunch your plugin.
+Building on the work of a live reloading Figma plugin from the [Ditto](https://github.com/dittowords/figma-plugin-react-template) team, in addition to live-reloading, this template contains further enhancements with:
 
+- Support for Tailwind CSS w/ incremental CSS
+- Plugin Helper to send commands synchronously without onMessage stuff
+- Type Support for Plugin Commands that work across the UI and Controller Code
+- React Router support for multiple pages
+- Zustand based state management
+
+
+### Getting Started
+
+1. `yarn preview`
+Open Figma and run the plugin, and the browser should automatically open. Try to keep only one instance of the UI running in your browser.
+
+2. `yarn build:watch`
+This is the plugin as it runs in Figma
+
+
+### Communicating from UI to Code
+
+There's a convenient `FigmaHelper` class that makes life easy. Otherwise you'll be using `plugin.onMessage` and trying to handle responses in an async manner. 
+
+In your React Code:
+
+In `app/home.tsx`
+```javascript
+const figmaHelper = new FigmaHelper([]);
+const currentUser = await figmaHelper.run('get-current-user')
+```
+
+In `plugin/Controller.ts` 
+```javascript
+// add your command to the switch statement
+figma.ui.onmessage = async (msg: FigmaUIMessage) => {
+    const {commandDetails, args} = msg;
+      switch (commandDetails.command) {
+      case 'get-current-user':
+        {
+           sendResponse(msg.commandDetails, {...figma.currentUser, fileKey: figma.fileKey});
+        }
+      break;
+      }
+   })
+```
+
+In `typings/commands.ts`
+```typescript
+export type FigmaMessageCommands = 'get-current-user' | 'another-command'
+```
+
+
+### Live reload Demo
 ![Screen Recording 2021-05-05 at 03 46 11 PM](https://user-images.githubusercontent.com/7476817/117219079-5c0f6580-adb9-11eb-9cfd-6e803d93e3ca.gif)
 ![Screen Recording 2021-05-05 at 03 45 16 PM](https://user-images.githubusercontent.com/7476817/117219001-32563e80-adb9-11eb-839d-d8cde22e5dd1.gif)
-
-## Quickstart
-
-1. `yarn`
-2. `yarn preview:plugin`
-3. In Figma load your plugin by right-clicking `Plugins > Development > New Plugin`, and select the project's `manifest.json` file:
-<img src="https://user-images.githubusercontent.com/7476817/117482170-da364e00-af18-11eb-87ad-479d63c4ea7c.png" width="600"><img src="https://user-images.githubusercontent.com/7476817/117482189-df939880-af18-11eb-87ea-9fd11738b8f5.png" width="600">
-4. In another window run `yarn preview:browser` 
-
-4. To run the React app inside of Figma, run `yarn build:watch`
-
-## How it works
-
-Figma plugins interact with a Figma document by passing messages between the Figma app, and the plugin:
-![image](https://user-images.githubusercontent.com/7476817/117206661-f9619e00-ada7-11eb-8f07-2bea23a2f355.png)
-
-By adding a middleman between the two, we can decouple Figma and a plugin, so that we can build plugins outside of Figma, while still having access to the Figma sandbox. In this case, we run utilize a [websocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) server to forward messages between the Figma sandbox and the plugin being developed. Depending on the build commands run, the React app is built differently. Your React app is wrapped inside of a  'Preview App' component to render the plugin in a browser and to handle the message proxying logic to our websocket server. In Figma we run the 'Preview App' by itself to handle interacting message proxying and handling with the Figma sandbox. 
-
-![image](https://user-images.githubusercontent.com/7476817/117206636-f36bbd00-ada7-11eb-8f40-12ef474ce92b.png)
 
 
 ## Troubleshooting
