@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import App from "./App";
+import * as React from 'react';
+import { useState, useEffect, useRef } from "react";
+import App from "../App";
 
 const PREVIEW_ENV = process.env.PREVIEW_ENV
 

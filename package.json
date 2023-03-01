@@ -2,14 +2,15 @@
   "name": "figma-plugin-react-template",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:dittowords/figma-plugin-react-template.git",
-  "author": "XavierAgostini <xavier.agostini@mail.mcgill.ca>",
+  "repository": "git@github.com:rlingineni/figma-plugin-react-template.git",
+  "author": "Ravi Lingineni (rlingineni@live.com)",
   "license": "MIT",
   "scripts": {
     "build": "webpack --mode=production",
-    "build:watch": "webpack --mode=development --watch",
-    "preview:plugin": "webpack --mode=development --PREVIEW_ENV=figma --watch",
-    "preview:browser": "node preview-server.js & webpack-dev-server --mode=development --PREVIEW_ENV=browser"
+    "watch": "webpack --mode=development --watch",
+    "preview-plugin": "webpack --mode=development --PREVIEW_ENV=figma --watch",
+    "preview-browser": "node preview-server.js & webpack-dev-server --mode=development --PREVIEW_ENV=browser",
+    "preview": "concurrently \"yarn:preview-plugin\" \"yarn:preview-browser\""
   },
   "dependencies": {
     "@figma/plugin-typings": "^1.19.0",
