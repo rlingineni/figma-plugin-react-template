@@ -44,14 +44,14 @@ function App() {
 
   return (
     <div className="container">
-      <div className="header">
+      <div className="flex flex-col items-center mb-6 bg-red-200 p-6">
         <img src={require("./assets/logo.svg")} />
-        <h2>Update Text App</h2>
+        <h2 className="text-center text-xl font-bold">Update Text App</h2>
       </div>
 
       <div>
         {selectedTextNodes.length === 0 && (
-          <div className="select-warning">
+          <div className="select-warning text-sm">
             Select some text in Figma that you wish to edit.
           </div>
         )}

@@ -18,7 +18,7 @@ figma.showUI(__html__);
 if (PREVIEW_ENV === "figma") {
   figma.ui.resize(300, 200);
 } else {
-  figma.ui.resize(400, 400);
+  figma.ui.resize(320, 390);
 }
 
 // generate a message with the data for the UI

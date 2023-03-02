@@ -6,11 +6,14 @@
   "author": "Ravi Lingineni (rlingineni@live.com)",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --mode=production",
+    "build": "webpack --mode=production && npm run build-css",
     "watch": "webpack --mode=development --watch",
     "preview-plugin": "webpack --mode=development --PREVIEW_ENV=figma --watch",
     "preview-browser": "node preview-server.js & webpack-dev-server --mode=development --PREVIEW_ENV=browser",
-    "preview": "concurrently \"yarn:preview-plugin\" \"yarn:preview-browser\""
+    "preview": "concurrently \"yarn:preview-plugin\" \"yarn:preview-browser\" \"yarn:watch-css\" ",
+    "compare":"concurrently \"yarn:preview-browser\" \"yarn:watch\" \"yarn:watch-css\"",
+    "build-css": "npx tailwindcss -i ./src/app/styles/input.css -o ./src/app/styles/ui.css",
+    "watch-css": "npx tailwindcss -i ./src/app/styles/input.css -o ./src/app/styles/ui.css --watch"
   },
   "dependencies": {
     "@figma/plugin-typings": "^1.58.0",
