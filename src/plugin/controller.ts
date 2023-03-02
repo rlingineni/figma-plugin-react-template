@@ -38,6 +38,7 @@ figma.on("selectionchange", () => {
 
 figma.ui.onmessage = async (msg: FigmaUIMessage) => {
   const { commandDetails, args } = msg;
+  if (!commandDetails.command) return;
   try {
     switch (commandDetails.command) {
       case "get-selected-text":
