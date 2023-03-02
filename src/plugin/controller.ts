@@ -23,7 +23,6 @@ if (PREVIEW_ENV === "figma") {
 
 // generate a message with the data for the UI
 function sendResponse(commandDetails: FigmaCommandDetails, data: any) {
-  console.log(commandDetails);
   const msg = {
     command: commandDetails.command,
     data,
