@@ -1,3 +1,16 @@
+import { FigmaEvents, FigmaMessageCommands } from "../types/commands";
+
+interface FigmaCommandDetails {
+  command: FigmaMessageCommands | FigmaEvents;
+  requestId?: string;
+}
+
+export interface FigmaUIMessage {
+  commandDetails: FigmaCommandDetails;
+  args: any;
+  customCommand?: boolean;
+}
+
 const PREVIEW_ENV = process.env.PREVIEW_ENV;
 
 figma.showUI(__html__);
@@ -8,33 +21,63 @@ if (PREVIEW_ENV === "figma") {
   figma.ui.resize(400, 400);
 }
 
-const getSelectedNodes = () => {
-  const selectedTextNodes = figma.currentPage.selection
-    .filter((node) => node.type === "TEXT")
-    .map((node: TextNode) => ({ figmaNodeID: node.id, text: node.characters }));
-  figma.ui.postMessage({
-    event: "selected-text-nodes",
-    nodes: selectedTextNodes,
-  });
-};
+// generate a message with the data for the UI
+function sendResponse(commandDetails: FigmaCommandDetails, data: any) {
+  console.log(commandDetails);
+  const msg = {
+    command: commandDetails.command,
+    data,
+    requestId: commandDetails.requestId,
+  };
 
-figma.ui.onmessage = async (msg) => {
-  if (msg.type === "create-text") {
-    const newTextNode = figma.createText();
-    await figma.loadFontAsync(<FontName>newTextNode.fontName);
-    newTextNode.characters = msg.text;
-    newTextNode.name = "Sample Text";
+  figma.ui.postMessage(msg);
+}
 
-    figma.currentPage.appendChild(newTextNode);
+figma.on("selectionchange", () => {
+  sendResponse({ command: "selectionchange" }, "");
+});
 
-    figma.currentPage.selection = [newTextNode];
+figma.ui.onmessage = async (msg: FigmaUIMessage) => {
+  const { commandDetails, args } = msg;
+  try {
+    switch (commandDetails.command) {
+      case "get-selected-text":
+        {
+          const selectedTextNodes = figma.currentPage.selection
+            .filter((node) => node.type === "TEXT")
+            .map((node: TextNode) => ({
+              id: node.id,
+              text: node.characters,
+            }));
+
+          sendResponse(msg.commandDetails, selectedTextNodes);
+        }
+        break;
+      case "update-text":
+        {
+          const { id, text } = args;
+          const textNode = <TextNode>figma.getNodeById(id);
+
+          await Promise.all(
+            textNode
+              .getRangeAllFontNames(0, textNode.characters.length)
+              .map(figma.loadFontAsync)
+          );
+
+          textNode.characters = text;
+          sendResponse(msg.commandDetails, true);
+        }
+        break;
+      case "get-current-user":
+        {
+          sendResponse(msg.commandDetails, {
+            ...figma.currentUser,
+            fileKey: figma.fileKey,
+          });
+        }
+        break;
+    }
+  } catch (ex) {
+    console.log(ex);
   }
-  if (msg.type === "update-text") {
-    const textNode = <TextNode>figma.getNodeById(msg.figmaNodeID);
-    await figma.loadFontAsync(<FontName>textNode.fontName);
-    textNode.characters = msg.text;
-    getSelectedNodes();
-  }
 };
-
-figma.on("selectionchange", () => getSelectedNodes());

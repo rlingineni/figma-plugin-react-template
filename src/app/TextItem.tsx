@@ -1,41 +1,35 @@
-import * as React from 'react';
+import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 
 const TextItem = ({ node, handleUpdateText }) => {
-  const [isEditing, setIsEditing] = useState(false)
-  const [text, setText] = useState(node.text)
-  const inputRef: any = useRef()
+  const [isEditing, setIsEditing] = useState(false);
+  const [text, setText] = useState(node.text);
+  const inputRef: any = useRef();
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
-      inputRef.current.focus()
+      inputRef.current.focus();
     }
-  }, [isEditing])
+  }, [isEditing]);
 
   return (
     <div className="textItem">
       {!isEditing ? (
-        <div 
-          onClick={() => setIsEditing(true)}
-        >
-          {node.text}
-          </div>
-      ): (
-        <input
+        <div onClick={() => setIsEditing(true)}>{node.text}</div>
+      ) : (
+        <div
+          contentEditable
+          suppressContentEditableWarning
           ref={inputRef}
-          value={text} 
-          onChange={e => setText(e.target.value)}
-          onBlur={() => setIsEditing(false)}
-          onKeyDown={e => {
-            if (e.key === 'Enter') {
-              setIsEditing(false)
-              handleUpdateText(node.figmaNodeID, text)
-            }
+          onBlur={(e) => {
+            handleUpdateText(node.id, e.currentTarget.innerText);
           }}
-        />
+        >
+          {text}
+        </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default TextItem
+export default TextItem;

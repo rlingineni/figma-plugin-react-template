@@ -1,34 +1,46 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+import { FigmaEvents } from "../types/commands";
 import TextItem from "./TextItem";
-
-declare function require(path: string): any;
+import { FigmaHelper } from "./utils/figma";
 
 function App() {
-  const [selectedTextNodes, setSelectedTextNodes] = useState<any[]>([]);
+  const [selectedTextNodes, setSelectedTextNodes] = useState<
+    { id: string; text: string }[]
+  >([]);
 
-  const onMessage = (msg) => {
-    if (
-      msg.data.pluginMessage &&
-      msg.data.pluginMessage.event === "selected-text-nodes"
-    ) {
-      setSelectedTextNodes(msg.data.pluginMessage.nodes);
-    }
-  };
+  // putting the helper on the state variable because we don't want to re-create on every render
+  const [figmaHelper, setFigmaHelper] = React.useState(new FigmaHelper([]));
 
-  const handleUpdateText = (figmaNodeID, updatedText) => {
-    parent.postMessage(
-      {
-        pluginMessage: { type: "update-text", figmaNodeID, text: updatedText },
-      },
-      "*"
-    );
-  };
-
+  // since in this UI we care about events, defining the handlers on initial render
   useEffect(() => {
-    window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
+    const figmaCommands = [
+      {
+        command: "selectionchange" as FigmaEvents,
+        onResponse: () => {
+          // do some work here
+          console.log("change selection...");
+          getSelectedText();
+        },
+      },
+    ];
+
+    setFigmaHelper(new FigmaHelper(figmaCommands));
   }, []);
+
+  const getSelectedText = async () => {
+    const selectedNodes = await figmaHelper.run("get-selected-text");
+
+    setSelectedTextNodes(selectedNodes);
+  };
+
+  const handleUpdateText = async (figmaNodeID, updatedText) => {
+    await figmaHelper.run("update-text", {
+      id: figmaNodeID,
+      text: updatedText,
+    });
+    getSelectedText();
+  };
 
   return (
     <div className="container">
