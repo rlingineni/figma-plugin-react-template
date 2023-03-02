@@ -1,8 +1,13 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import App from './App'
-import PreviewApp from './WebViewer/PreviewApp'
-import './styles/ui.css'
+import * as React from "react";
+import App from "./App";
+import PreviewApp from "./WebViewer/PreviewApp";
 
-const PREVIEW_ENV = process.env.PREVIEW_ENV
-ReactDOM.render(!PREVIEW_ENV ? <App /> : <PreviewApp />, document.getElementById('react-page'))
+import { createRoot } from "react-dom/client";
+
+import "./styles/ui.css";
+
+const PREVIEW_ENV = process.env.PREVIEW_ENV;
+
+const container = document.getElementById("react-page");
+const root = createRoot(container!);
+root.render(!PREVIEW_ENV ? <App /> : <PreviewApp />);

@@ -547,8 +547,20 @@ video {
   }
 }
 
+.absolute {
+  position: absolute;
+}
+
+.bottom-3 {
+  bottom: 0.75rem;
+}
+
 .mb-6 {
   margin-bottom: 1.5rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
 }
 
 .flex {
@@ -559,6 +571,18 @@ video {
   display: none;
 }
 
+.h-full {
+  height: 100%;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -567,13 +591,39 @@ video {
   align-items: center;
 }
 
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
 .bg-red-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 202 202 / var(--tw-bg-opacity));
 }
 
+.p-3 {
+  padding: 0.75rem;
+}
+
 .p-6 {
   padding: 1.5rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.pt-3 {
+  padding-top: 0.75rem;
 }
 
 .text-center {
@@ -594,58 +644,14 @@ video {
   font-weight: 700;
 }
 
-button {
-  border-radius: 5px;
-  background: white;
-  color: black;
-  border: none;
-  padding: 8px 15px;
-  margin: 0 5px;
-  box-shadow: inset 0 0 0 1px black;
-  outline: none;
+.font-semibold {
+  font-weight: 600;
 }
 
-.container {
-  padding: 2rem;
-}
-
-#create {
-  box-shadow: none;
-  background: #18a0fb;
-  color: white;
-}
-
-input {
-  border: none;
-  outline: none;
-  /* padding: 0; */
-  width: 100%;
-  font-size: 16px;
-  padding: 8px;
-  /* padding: 8px 0; */
-}
-
-.header {
-  text-align: center;
-}
-
-.textList {
-  display: flex;
-  flex-direction: column;
-}
-
-.textItem {
-  display: flex;
-  justify-content: center;
-  margin: 0.5rem 0;
-}
-
-input:hover {
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
-}
-
-input:focus {
-  box-shadow: inset 0 0 0 2px #18a0fb;
+.shadow-md {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 /* Preview App */
@@ -668,12 +674,7 @@ input:focus {
   position: relative;
   height: 450px;
   width: 330px;
-  border: 1px solid black;
-}
-
-.select-warning {
-  text-align: center;
-  color: #4a4848;
+  border: 1px solid lightgray;
 }
 
 .preview-connection-status {
