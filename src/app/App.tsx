@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 import PageWrapper from "./components/PageWrapper";
-import Home from "./pages/Home";
+import Home from "./pages/Page2";
 import TextSelection from "./pages/TextSelection";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
       ),
     },
     {
-      path: "/home",
+      path: "/page2",
       element: (
         <PageWrapper>
           <Home />

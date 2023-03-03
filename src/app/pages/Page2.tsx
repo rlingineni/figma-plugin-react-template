@@ -1,10 +1,10 @@
 import * as React from "react";
 import { PageHeader } from "../components/Header";
 
-const Home = () => {
+const Page2 = () => {
   return (
     <div>
-      <PageHeader title="Home" />
+      <PageHeader title="Page 2" />
       <div className="px-3 pt-3">
         <p>Hey, this is a second page!!</p>
       </div>
@@ -12,4 +12,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Page2;
