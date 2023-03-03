@@ -1,6 +1,6 @@
 # figma-plugin-react-template
 
-Building on the work of a live reloading Figma plugin from the [Ditto](https://github.com/dittowords/figma-plugin-react-template) team, in addition to live-reloading, this template contains further enhancements with:
+This builds on the work of a live reloading Figma plugin from the [Ditto](https://github.com/dittowords/figma-plugin-react-template) team (which is pure genius) to add a few more enhancements with:
 
 - Support for Tailwind CSS w/ incremental CSS
 - Plugin Helper to send commands synchronously without onMessage stuff
