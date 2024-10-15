@@ -6,6 +6,11 @@ const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin
 const webpack = require('webpack');
 const path = require('path')
 
+// Open SSL fix for > node16 (https://stackoverflow.com/a/69691525/3861327)
+const crypto = require("crypto");
+const crypto_orig_createHash = crypto.createHash;
+crypto.createHash = algorithm => crypto_orig_createHash(algorithm == "md4" ? "sha256" : algorithm);
+
 module.exports = (env, argv) => ({
   mode: argv.mode === 'production' ? 'production' : 'development',
 
